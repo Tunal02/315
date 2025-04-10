@@ -1,7 +1,9 @@
 const Product = require('../models/product');
 
 const getProducts = async (req, res) => {
-    const { sort, order, category, min, max } = req.query;
+    const { sort, order, category, price_gte, price_lte } = req.query;
+
+
 
     try {
         const validSortFields = ["name", "price", "stock", "category"];
@@ -14,11 +16,15 @@ const getProducts = async (req, res) => {
             query.category = category;
         }
 
-        if (min && max) {
-            query.price = { $gte: Number(min), $lte: Number(max) }; 
+        if (price_gte || price_lte) {
+          query.price = { $gte: Number(price_lte), $lte:Number(price_gte)};
         }
 
-        const products = await Product.find(query).sort({ [sortField]: sortOrder });
+
+        const products = await Product.find(query);
+
+      console.log(query)
+        console.log(products)
 
         res.status(200).json(products);
     } catch (error) {

@@ -8,8 +8,8 @@ const Homepage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedCategory, setCategory] = useState("");
-    const [minPrice, setMinPrice] = useState("");
-    const [maxPrice, setMaxPrice] = useState("");
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(0);
 
 
     useEffect(() => {
@@ -60,6 +60,7 @@ const Homepage = () => {
 
     const category_price=async (category,max,min) => {
         try{
+            console.log(typeof max); // "string"
             const response = await axios.get(`/products/get-products?category=${category}&price_gte=${min}&price_lte=${max}`);
             setProducts(response.data);
             setLoading(false);
